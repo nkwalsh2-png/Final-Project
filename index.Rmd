@@ -60,7 +60,7 @@ merged_data <- merged_data |>
 merged_data <- merged_data |>
   mutate(party_switch = case_when(
     party_2020 == party_2024 ~ "Same Party",
-    party_2020 == party_2024 ~ "Switched Party",
+    party_2020 != party_2024 ~ "Switched Party",
     TRUE ~ NA_character_
   ))
 
@@ -72,16 +72,25 @@ write.csv(merged_data, "merged_cleaned_data.csv", row.names = FALSE)
 
 
 ```{r}
-ggplot(merged_data, aes(x = party_2020, fill = party_2024)) + 
-  geom_bar(position = "dodge") +
-  labs(title = "2020 vs 2024 Party Vote",
-       x = "2020 Vote",
-       y = "Number of Respondents",
-       fill = "2024 Vote") +
-  scale_fill_manual(values = c("Democrat" = "steelblue",
-                               "Republican" = "indianred",
-                               "Other" = "gray")) +
+merged_data <- merged_data |>
+  filter(!is.na(V241200), V241200 > 0) |>
+  mutate(
+    biden_approval = case_when(
+      V241200 %in% 1:2 ~ "Approve",
+      V241200 %in% 4:5 ~ "Disapprove",
+      V241200 == 3 ~ "Neutral"),
+    switched = party_2020 != party_2024)
+
+ggplot(merged_data, aes(x = biden_approval, fill = switched)) +
+  geom_bar(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(values = c("TRUE" = "tomato", "FALSE" = "steelblue"),
+                    labels = c("Stayed", "Switched")) +
+  labs(title = "Party Switching by Biden Approval",
+       x = "Biden Job Approval",
+       y = "Proportion of Respondents",
+       fill = "Party Switch?") +
   theme_minimal()
 ```
 
-
+This shows whether or not people who disapproved of Biden were likely to switch parties in 2024 compared to those who approved of Biden. I would expect to see a higher level of red which means switch over the disapproval but it is actually equal for approval and disapproval. The neutral party is even between stayed and switched. 

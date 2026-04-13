@@ -95,10 +95,25 @@ ggplot(merged_data, aes(x = biden_approval, fill = switched)) +
   theme_minimal()
 ```
 
-Milestone 4
-
 This shows whether or not people who disapproved of Biden were likely to switch parties in 2024 compared to those who approved of Biden. I would expect to see a higher level of red which means switch over the disapproval but it is actually equal for approval and disapproval. The neutral party is even between stayed and switched. 
 
+Milestone 4
+```{r}
+
+```
+
+```{r}
+ggplot(merged_data, aes(x = as.numeric(factor(biden_approval)), y = as.numeric(switched))) +
+  geom_jitter(alpha = 0.3, height = 0.05, color = "steelblue") +
+  geom_smooth(method = "lm", color = "tomato", se = TRUE) +
+  scale_x_continuous(breaks = 1:3, labels = c("Approve", "Neutral", "Disapprove")) +
+  labs(title = "Biden Approval and Party Switching",
+       x = "Biden Approval",
+       y = "Switched Party (0 = No, 1 = Yes)") +
+  theme_minimal()
+```
+
+This shows the opposite of my hypothesis which is that people who approved Biden were slightly more likely to switch parties as there is a slight downward slop. Neutral still falls int he middle. Since the grey is so large there is lots of uncertainty so the trend is not statistically significant. 
 
 
 

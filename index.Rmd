@@ -66,7 +66,7 @@ merged_data <- merged_data |>
     TRUE ~ NA_character_
   ))
 
-glimpse(merged_data)
+# glimpse(merged_data)
 table(merged_data$party_switch)
 
 write.csv(merged_data, "merged_cleaned_data.csv", row.names = FALSE)

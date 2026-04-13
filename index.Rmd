@@ -38,6 +38,8 @@ Cleaning the data set and making graph with variables of the Biden administratio
 ```
 
 
+Milestone 3
+
 ```{r}
 merged_data <- full_join(data_2020, data_2024, by = c("V200001" = "V240001"))
 merged_data <- merged_data |>
@@ -93,4 +95,11 @@ ggplot(merged_data, aes(x = biden_approval, fill = switched)) +
   theme_minimal()
 ```
 
+Milestone 4
+
 This shows whether or not people who disapproved of Biden were likely to switch parties in 2024 compared to those who approved of Biden. I would expect to see a higher level of red which means switch over the disapproval but it is actually equal for approval and disapproval. The neutral party is even between stayed and switched. 
+
+
+
+
+

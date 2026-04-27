@@ -14,14 +14,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ## R Markdown
 
 
-Some ideas could be something that has to do with radicals and how that effects elections. 
+Did the Biden administration affect whether people voted for the same party in 2020 than they did in 2024?
 
-- Did the Biden administration affect whether people voted for the same party in 2020 than they did in 2024?
+After the Biden administration, more people who voted with democrats voted with republicans the next year. 
 
-Extra Stuff
-- outcome variable -> party vote consistency
-- explanatory variable -> perceptions toward Biden admin
-- control variables -> age, education, income, race 
+This is important as it can show 
+
 
 ```{r}
 library(tidyverse)
@@ -98,9 +96,6 @@ ggplot(merged_data, aes(x = biden_approval, fill = switched)) +
 This shows whether or not people who disapproved of Biden were likely to switch parties in 2024 compared to those who approved of Biden. I would expect to see a higher level of red which means switch over the disapproval but it is actually equal for approval and disapproval. The neutral party is even between stayed and switched. 
 
 Milestone 4
-```{r}
-
-```
 
 ```{r}
 ggplot(merged_data, aes(x = as.numeric(factor(biden_approval)), y = as.numeric(switched))) +
@@ -112,6 +107,14 @@ ggplot(merged_data, aes(x = as.numeric(factor(biden_approval)), y = as.numeric(s
        y = "Switched Party (0 = No, 1 = Yes)") +
   theme_minimal()
 ```
+
+
+```{r}
+model <- lm(switched ~ biden_approval,
+             data = merged_data)
+summary(model)
+```
+The regression line shows there is no really likelihood that whether there was approval or not on the Biden administration that there was a more likelihood to switch parties or stay. There is not statistical significance. There are likely outside factors affecting whether people switch party votes or not. 
 
 This shows the opposite of my hypothesis which is that people who approved Biden were slightly more likely to switch parties as there is a slight downward slop. Neutral still falls int he middle. Since the grey is so large there is lots of uncertainty so the trend is not statistically significant. 
 

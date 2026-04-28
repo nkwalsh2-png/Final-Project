@@ -1,5 +1,5 @@
 ---
-title: "Final Proj"
+title: "Final Project: Approval Rates Affecting Party Switches"
 author: "Nora Walsh"
 date: "2026-02-16"
 output:
@@ -11,14 +11,15 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
 
+
+## Introduction
 
 Did the Biden administration affect whether people voted for the same party in 2020 than they did in 2024?
 
 After the Biden administration, more people who voted with democrats voted with republicans the next year. 
 
-This is important as it can show 
+This is important as it can show if an administration's actions can have true affect on future elections. If a democratic party has poor execution while in office, people may switch and vote republicans. This same concept applies vice versa. Specifically looking into the Biden administration and the approval rating, can give insight into whether or not approval affects party switching. This can show people who campaign how important execution and being liked is to reelection. In the end, this could change who parties have run for them if it means they could be risking future party reelection. 
 
 
 ```{r}
@@ -36,17 +37,11 @@ Cleaning the data set and making graph with variables of the Biden administratio
 ```
 
 
-Milestone 3
 
 ```{r}
-merged_data <- full_join(data_2020, data_2024, by = c("V200001" = "V240001"))
-merged_data <- merged_data |>
-  distinct()
-
-merged_data <- merged_data |>
-  filter(V202110x > 0 & V242096x > 0)
-
-merged_data <- merged_data |>
+merged_data <- full_join(data_2020, data_2024, by = c("V200001" = "V240001")) |>
+  distinct() |>
+  filter(V202110x > 0 & V242096x > 0) |>
   mutate(
     party_2020 = case_when(
       V202110x == 1 ~ "Democrat",
@@ -64,15 +59,16 @@ merged_data <- merged_data |>
     TRUE ~ NA_character_
   ))
 
-# glimpse(merged_data)
-table(merged_data$party_switch)
+dem_to_rep <- merged_data |>
+  filter(party_2020 == "Democrat", party_2024 == "Republican")
 
-write.csv(merged_data, "merged_cleaned_data.csv", row.names = FALSE)
+table(merged_data$party_switch)
+write.csv(dem_to_rep, "merged_cleaned_data.csv", row.names = FALSE)
 ```
 
 
 ```{r}
-merged_data <- merged_data |>
+dem_to_rep <- dem_to_rep |>
   filter(!is.na(V241200), V241200 > 0) |>
   mutate(
     biden_approval = case_when(
@@ -80,29 +76,45 @@ merged_data <- merged_data |>
       V241200 %in% 4:5 ~ "Disapprove",
       V241200 == 3 ~ "Neutral"),
     switched = party_2020 != party_2024)
+dem_only <- merged_data |>
+  filter(party_2020 == "Democrat") |>
+  filter(!is.na(V241200), V241200 > 0) |>
+  mutate(
+    biden_approval = case_when(
+      V241200 %in% 1:2 ~ "Approve",
+      V241200 %in% 4:5 ~ "Disapprove",
+      V241200 == 3 ~ "Neutral"),
+    switched = party_2024 == "Republican")
 
-ggplot(merged_data, aes(x = biden_approval, fill = switched)) +
-  geom_bar(position = "fill") +
-  scale_y_continuous(labels = scales::percent) +
+table(dem_only$party_2020, dem_only$party_2024)
+table(dem_only$switched)
+table(dem_only$biden_approval, dem_only$switched)
+```
+
+
+```{r}
+ggplot(dem_to_rep, aes(x = biden_approval, fill = switched)) +
+  geom_bar(position = "dodge") +
   scale_fill_manual(values = c("TRUE" = "tomato", "FALSE" = "steelblue"),
-                    labels = c("Stayed", "Switched")) +
-  labs(title = "Party Switching by Biden Approval",
+                    labels = c("FALSE" = "Stayed Democrat", "TRUE" = "Switched")) +
+  labs(title = "Democrat to Republican Switching by Biden Approval",
        x = "Biden Job Approval",
        y = "Proportion of Respondents",
        fill = "Party Switch?") +
   theme_minimal()
 ```
 
+
 This shows whether or not people who disapproved of Biden were likely to switch parties in 2024 compared to those who approved of Biden. I would expect to see a higher level of red which means switch over the disapproval but it is actually equal for approval and disapproval. The neutral party is even between stayed and switched. 
 
 Milestone 4
 
 ```{r}
-ggplot(merged_data, aes(x = as.numeric(factor(biden_approval)), y = as.numeric(switched))) +
+ggplot(dem_only, aes(x = as.numeric(factor(biden_approval)), y = as.numeric(switched))) +
   geom_jitter(alpha = 0.3, height = 0.05, color = "steelblue") +
   geom_smooth(method = "lm", color = "tomato", se = TRUE) +
-  scale_x_continuous(breaks = 1:3, labels = c("Approve", "Neutral", "Disapprove")) +
-  labs(title = "Biden Approval and Party Switching",
+  scale_x_continuous(breaks = 1:2, labels = c("Neutral", "Disapprove")) +
+  labs(title = "Democrat to Republican Switching by Biden Approval",
        x = "Biden Approval",
        y = "Switched Party (0 = No, 1 = Yes)") +
   theme_minimal()
@@ -111,7 +123,7 @@ ggplot(merged_data, aes(x = as.numeric(factor(biden_approval)), y = as.numeric(s
 
 ```{r}
 model <- lm(switched ~ biden_approval,
-             data = merged_data)
+             data = dem_only)
 summary(model)
 ```
 The regression line shows there is no really likelihood that whether there was approval or not on the Biden administration that there was a more likelihood to switch parties or stay. There is not statistical significance. There are likely outside factors affecting whether people switch party votes or not. 

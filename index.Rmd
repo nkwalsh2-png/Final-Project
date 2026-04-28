@@ -39,7 +39,7 @@ Cleaning the data set and making graph with variables of the Biden administratio
 
 
 ```{r}
-merged_data <- full_join(data_2020, data_2024, by = c("V200001" = "V240001")) |>
+merged_data <- full_join(data_2020, data_2024, by = c("V200001" = "V200001")) |>
   distinct() |>
   filter(V202110x > 0 & V242096x > 0) |>
   mutate(
@@ -113,7 +113,7 @@ Milestone 4
 ggplot(dem_only, aes(x = as.numeric(factor(biden_approval)), y = as.numeric(switched))) +
   geom_jitter(alpha = 0.3, height = 0.05, color = "steelblue") +
   geom_smooth(method = "lm", color = "tomato", se = TRUE) +
-  scale_x_continuous(breaks = 1:2, labels = c("Neutral", "Disapprove")) +
+  scale_x_continuous(breaks = 1:3, labels = c("Approve", "Neutral", "Disapprove")) +
   labs(title = "Democrat to Republican Switching by Biden Approval",
        x = "Biden Approval",
        y = "Switched Party (0 = No, 1 = Yes)") +

@@ -92,7 +92,7 @@ table(dem_only$biden_approval, dem_only$switched)
 ```
 This graph shows the outcome variable or dependent variable which is just showing who stayed democrat and who switched to republican. Party switching is the variable. The independent will be shown in a later graph which is approval, disapproval, and neutral. A very high percentage of democrats did not switch parties and this helps predict that those who disapprove are more likely to switch. This is already showing a pattern with the hypothesis since so many democrats stayed. 
 
-```{r}
+```{r, echo=FALSE}
 library(ggplot2)
 ggplot(dem_only, aes(x = switched)) +
   geom_bar(fill = "steelblue") +

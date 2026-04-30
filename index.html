@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-4-1.png","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/figure-html5/unnamed-chunk-6-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","merged_cleaned_data.csv"]}
+  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-4-1.png","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/figure-html5/unnamed-chunk-6-1.png","index_files/figure-html5/unnamed-chunk-7-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","merged_cleaned_data.csv"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1570,14 +1570,18 @@ FALSE  TRUE
   Disapprove    84   13
   Neutral      203    4</code></pre>
 </div>
-<h2 id="results-section">Results Section</h2>
-<p>The bar chart shows how many people switched based on if they approved, disapproved, or had a neutral opinion on Biden. The chart shows that those who disapproved of Biden were more likely to switch and vote republican the next election by a much higher rate than those who approved. It is much taller than both neutral and approved and nuetral and approve were almost equal showing they switched at a much lower rate. It can not claim direct causation because it is cross sectional, observational study so that means correlation rather than causation.</p>
+<p>This graph shows the outcome variable or dependent variable which is just showing who stayed democrat and who switched to republican. Party switching is the variable. The independent will be shown in a later graph which is approval, disapproval, and neutral. A very high percentage of democrats did not switch parties and this helps predict that those who disapprove are more likely to switch. This is already showing a pattern with the hypothesis since so many democrats stayed.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" alt="" width="624" /></p>
 </div>
-<p>The regression shows that democrats who disapproved of Biden were about 12.7% points more likely to switch to republican in the next election than those who approved. This percent shows statistical significance and confirms the hypothesis. The p value is 7e-15 which is very statistically significant. The R squared value is .066 which means Biden’s approval explains about 6.6% of the party switching which though small, still matters and is significant. The data supports the hypothesis that the people who approve would continue to vote democrat.</p>
+<h2 id="results-section">Results Section</h2>
+<p>The bar chart shows how many people switched based on if they approved, disapproved, or had a neutral opinion on Biden. The chart shows that those who disapproved of Biden were more likely to switch and vote republican the next election by a much higher rate than those who approved. It is much taller than both neutral and approved and nuetral and approve were almost equal showing they switched at a much lower rate. It can not claim direct causation because it is cross sectional, observational study so that means correlation rather than causation.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" alt="" width="624" /></p>
+</div>
+<p>The regression shows that democrats who disapproved of Biden were about 12.7% points more likely to switch to republican in the next election than those who approved. This percent shows statistical significance and confirms the hypothesis. The p value is 7e-15 which is very statistically significant. The R squared value is .066 which means Biden’s approval explains about 6.6% of the party switching which though small, still matters and is significant. The data supports the hypothesis that the people who approve would continue to vote democrat.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="index_files/figure-html5/unnamed-chunk-7-1.png" alt="" width="624" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <pre><code>
@@ -1599,9 +1603,37 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 Residual standard error: 0.1466 on 891 degrees of freedom
 Multiple R-squared:  0.066, Adjusted R-squared:  0.0639 
 F-statistic: 31.48 on 2 and 891 DF,  p-value: 6.167e-14</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">FALSE</th>
+<th style="text-align: right;">TRUE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Approve</td>
+<td style="text-align: right;">586</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Disapprove</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Neutral</td>
+<td style="text-align: right;">203</td>
+<td style="text-align: right;">4</td>
+</tr>
+</tbody>
+</table>
 </div>
 <h2 id="conclusion">Conclusion</h2>
 <p>This project looked into whether the approval of the Biden administration had influence on Democratic voters to switch Republican in the next election. The hypothesis predicted that those who approved would continue to vote democrat while those who disapproved would switch. The data supported the hypothesis and the data suggests that approval ratings do have an effect on whether voters will party switch. There are other variables bot accounted for in the data such as economics, ideals on social issues, and certain candidate preferences. To improve the project, there would need to be more variables and perhaps a longer sample. The project demonstrates how voters feel about the administration can affect which party they are going to vote for in the future. This shows the importance of public approval for a party long tern success.</p>
+<h2 id="ai-usage-statement">AI Usage Statement</h2>
+<p>AI was used to support me in the project when I had to edit some of my data to make the project flow more well. It helped to clean up some of my data as when I first started I had a lot. Overall, there was minimum AI usage except for my coding when I needed guidance because I was stuck or had to redo some things.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

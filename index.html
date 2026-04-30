@@ -1545,133 +1545,41 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 <div class="d-article">
 <h2 id="introduction">Introduction</h2>
-<p>Did the Biden administration affect whether people voted for the same party in 2020 than they did in 2024?</p>
-<p>After the Biden administration, more people who voted with democrats voted with republicans the next year.</p>
-<p>This is important as it can show if an administration’s actions can have true affect on future elections. If a democratic party has poor execution while in office, people may switch and vote republicans. This same concept applies vice versa. Specifically looking into the Biden administration and the approval rating, can give insight into whether or not approval affects party switching. This can show people who campaign how important execution and being liked is to reelection. In the end, this could change who parties have run for them if it means they could be risking future party reelection.</p>
+<p>Did approval rates of the Biden administration affect whether people voted republican or democrat the next year?</p>
+<p>Hypothesis
+People who approved of the Biden administration voted for democrats the next year.</p>
+<p>This is important as it can show if an administration’s actions can have true affect on future elections. If a democratic party has poor execution while in office, people may switch and vote republicans. This same concept applies vice versa. Specifically looking into the Biden administration and the approval rating, can give insight into whether or not approval affects party switching. This can show people who campaign how important execution and being liked is to reelection. It will also demonstrate the success of an administration and if that gets more people to stay. Furthering the point of how execution of an administration can determine if a party stays in office for longer. In the end, this could change who parties have run for them if it means they could be risking future party reelection.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
-<span><span class='va'>data_2020</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"~/Downloads/anes_timeseries_2020_csv_20220210/anes_timeseries_2020_csv_20220210.csv"</span><span class='op'>)</span></span>
-<span><span class='va'>data_2024</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"~/Downloads/anes_timeseries_2024_csv_20250808/anes_timeseries_2024_csv_20250808.csv"</span><span class='op'>)</span></span></code></pre>
+
 </div>
-</div>
-<h2 id="milestone-3">Milestone 3</h2>
-<p>Cleaning the data set and making graph with variables of the Biden administration and party voting consistency:</p>
+<h2 id="data-section">Data Section</h2>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># colnames(data_2020)</span></span>
-<span><span class='co'># colnames(data_2024)</span></span></code></pre>
+
 </div>
-</div>
+<p>The table shows that where democrats voted the year after the Biden administration. To break it down, 858 democrats stayed while 15 voted other and 21 voted republican meaning 21 switched. The overall party switch count is 873 stayed (FALSE) while 21 switched (TRUE). The third table shows that 13.4% switched from the disapproved. So only about 13 out of 100 people who did not approve of Biden switched. This shows little impact of poor performance but there is still an impact on switching since there was little switch. For those who approve of Biden, about 4 out of 590 switched which is a .7% showing what was predicted and that almost all who approved would stay. It is 3 tables showing similar data confirming that those who disapprove were more likely to switch. The data supports the hypothesis as the disapprovers switch at a higher rate.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>merged_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>full_join</a></span><span class='op'>(</span><span class='va'>data_2020</span>, <span class='va'>data_2024</span>, by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"V200001"</span> <span class='op'>=</span> <span class='st'>"V200001"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>V202110x</span> <span class='op'>&gt;</span> <span class='fl'>0</span> <span class='op'>&amp;</span> <span class='va'>V242096x</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
-<span>    party_2020 <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
-<span>      <span class='va'>V202110x</span> <span class='op'>==</span> <span class='fl'>1</span> <span class='op'>~</span> <span class='st'>"Democrat"</span>,</span>
-<span>      <span class='va'>V202110x</span> <span class='op'>==</span> <span class='fl'>2</span> <span class='op'>~</span> <span class='st'>"Republican"</span>,</span>
-<span>      <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='st'>"Other"</span><span class='op'>)</span>,</span>
-<span>    party_2024 <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
-<span>      <span class='va'>V242096x</span> <span class='op'>==</span> <span class='fl'>1</span> <span class='op'>~</span> <span class='st'>"Democrat"</span>,</span>
-<span>      <span class='va'>V242096x</span> <span class='op'>==</span> <span class='fl'>2</span> <span class='op'>~</span> <span class='st'>"Republican"</span>,</span>
-<span>      <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='st'>"Other"</span><span class='op'>)</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='va'>merged_data</span> <span class='op'>&lt;-</span> <span class='va'>merged_data</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>party_switch <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
-<span>    <span class='va'>party_2020</span> <span class='op'>==</span> <span class='va'>party_2024</span> <span class='op'>~</span> <span class='st'>"Same Party"</span>,</span>
-<span>    <span class='va'>party_2020</span> <span class='op'>!=</span> <span class='va'>party_2024</span> <span class='op'>~</span> <span class='st'>"Switched Party"</span>,</span>
-<span>    <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='cn'>NA_character_</span></span>
-<span>  <span class='op'>)</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='va'>dem_to_rep</span> <span class='op'>&lt;-</span> <span class='va'>merged_data</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>party_2020</span> <span class='op'>==</span> <span class='st'>"Democrat"</span>, <span class='va'>party_2024</span> <span class='op'>==</span> <span class='st'>"Republican"</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>merged_data</span><span class='op'>$</span><span class='va'>party_switch</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>
-    Same Party Switched Party 
-          1547             91 </code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='op'>(</span><span class='va'>dem_to_rep</span>, <span class='st'>"merged_cleaned_data.csv"</span>, row.names <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
-</div>
-</div>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>dem_to_rep</span> <span class='op'>&lt;-</span> <span class='va'>dem_to_rep</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>V241200</span><span class='op'>)</span>, <span class='va'>V241200</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
-<span>    biden_approval <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
-<span>      <span class='va'>V241200</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span> <span class='op'>~</span> <span class='st'>"Approve"</span>,</span>
-<span>      <span class='va'>V241200</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span> <span class='op'>~</span> <span class='st'>"Disapprove"</span>,</span>
-<span>      <span class='va'>V241200</span> <span class='op'>==</span> <span class='fl'>3</span> <span class='op'>~</span> <span class='st'>"Neutral"</span><span class='op'>)</span>,</span>
-<span>    switched <span class='op'>=</span> <span class='va'>party_2020</span> <span class='op'>!=</span> <span class='va'>party_2024</span><span class='op'>)</span></span>
-<span><span class='va'>dem_only</span> <span class='op'>&lt;-</span> <span class='va'>merged_data</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>party_2020</span> <span class='op'>==</span> <span class='st'>"Democrat"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>V241200</span><span class='op'>)</span>, <span class='va'>V241200</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
-<span>    biden_approval <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
-<span>      <span class='va'>V241200</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span> <span class='op'>~</span> <span class='st'>"Approve"</span>,</span>
-<span>      <span class='va'>V241200</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span> <span class='op'>~</span> <span class='st'>"Disapprove"</span>,</span>
-<span>      <span class='va'>V241200</span> <span class='op'>==</span> <span class='fl'>3</span> <span class='op'>~</span> <span class='st'>"Neutral"</span><span class='op'>)</span>,</span>
-<span>    switched <span class='op'>=</span> <span class='va'>party_2024</span> <span class='op'>==</span> <span class='st'>"Republican"</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>dem_only</span><span class='op'>$</span><span class='va'>party_2020</span>, <span class='va'>dem_only</span><span class='op'>$</span><span class='va'>party_2024</span><span class='op'>)</span></span></code></pre>
-</div>
 <pre><code>          
            Democrat Other Republican
   Democrat      858    15         21</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>dem_only</span><span class='op'>$</span><span class='va'>switched</span><span class='op'>)</span></span></code></pre>
-</div>
 <pre><code>
 FALSE  TRUE 
   873    21 </code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>dem_only</span><span class='op'>$</span><span class='va'>biden_approval</span>, <span class='va'>dem_only</span><span class='op'>$</span><span class='va'>switched</span><span class='op'>)</span></span></code></pre>
-</div>
 <pre><code>            
              FALSE TRUE
   Approve      586    4
   Disapprove    84   13
   Neutral      203    4</code></pre>
 </div>
+<h2 id="results-section">Results Section</h2>
+<p>The bar chart shows how many people switched based on if they approved, disapproved, or had a neutral opinion on Biden. The chart shows that those who disapproved of Biden were more likely to switch and vote republican the next election by a much higher rate than those who approved. It is much taller than both neutral and approved and nuetral and approve were almost equal showing they switched at a much lower rate. It can not claim direct causation because it is cross sectional, observational study so that means correlation rather than causation.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>dem_to_rep</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>biden_approval</span>, fill <span class='op'>=</span> <span class='va'>switched</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TRUE"</span> <span class='op'>=</span> <span class='st'>"tomato"</span>, <span class='st'>"FALSE"</span> <span class='op'>=</span> <span class='st'>"steelblue"</span><span class='op'>)</span>,</span>
-<span>                    labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"FALSE"</span> <span class='op'>=</span> <span class='st'>"Stayed Democrat"</span>, <span class='st'>"TRUE"</span> <span class='op'>=</span> <span class='st'>"Switched"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Democrat to Republican Switching by Biden Approval"</span>,</span>
-<span>       x <span class='op'>=</span> <span class='st'>"Biden Job Approval"</span>,</span>
-<span>       y <span class='op'>=</span> <span class='st'>"Proportion of Respondents"</span>,</span>
-<span>       fill <span class='op'>=</span> <span class='st'>"Party Switch?"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
-</div>
 <p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" alt="" width="624" /></p>
 </div>
-<p>This shows whether or not people who disapproved of Biden were likely to switch parties in 2024 compared to those who approved of Biden. I would expect to see a higher level of red which means switch over the disapproval but it is actually equal for approval and disapproval. The neutral party is even between stayed and switched.</p>
-<p>Milestone 4</p>
+<p>The regression shows that democrats who disapproved of Biden were about 12.7% points more likely to switch to republican in the next election than those who approved. This percent shows statistical significance and confirms the hypothesis. The p value is 7e-15 which is very statistically significant. The R squared value is .066 which means Biden’s approval explains about 6.6% of the party switching which though small, still matters and is significant. The data supports the hypothesis that the people who approve would continue to vote democrat.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>dem_only</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>biden_approval</span><span class='op'>)</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>switched</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_jitter.html'>geom_jitter</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.3</span>, height <span class='op'>=</span> <span class='fl'>0.05</span>, color <span class='op'>=</span> <span class='st'>"steelblue"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span>, color <span class='op'>=</span> <span class='st'>"tomato"</span>, se <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Approve"</span>, <span class='st'>"Neutral"</span>, <span class='st'>"Disapprove"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Democrat to Republican Switching by Biden Approval"</span>,</span>
-<span>       x <span class='op'>=</span> <span class='st'>"Biden Approval"</span>,</span>
-<span>       y <span class='op'>=</span> <span class='st'>"Switched Party (0 = No, 1 = Yes)"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
-</div>
 <p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" alt="" width="624" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>switched</span> <span class='op'>~</span> <span class='va'>biden_approval</span>,</span>
-<span>             data <span class='op'>=</span> <span class='va'>dem_only</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span></span></code></pre>
-</div>
 <pre><code>
 Call:
 lm(formula = switched ~ biden_approval, data = dem_only)
@@ -1692,9 +1600,9 @@ Residual standard error: 0.1466 on 891 degrees of freedom
 Multiple R-squared:  0.066, Adjusted R-squared:  0.0639 
 F-statistic: 31.48 on 2 and 891 DF,  p-value: 6.167e-14</code></pre>
 </div>
-<p>The regression line shows there is no really likelihood that whether there was approval or not on the Biden administration that there was a more likelihood to switch parties or stay. There is not statistical significance. There are likely outside factors affecting whether people switch party votes or not.</p>
-<p>This shows the opposite of my hypothesis which is that people who approved Biden were slightly more likely to switch parties as there is a slight downward slop. Neutral still falls int he middle. Since the grey is so large there is lots of uncertainty so the trend is not statistically significant.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>This project looked into whether the approval of the Biden administration had influence on Democratic voters to switch Republican in the next election. The hypothesis predicted that those who approved would continue to vote democrat while those who disapproved would switch. The data supported the hypothesis and the data suggests that approval ratings do have an effect on whether voters will party switch. There are other variables bot accounted for in the data such as economics, ideals on social issues, and certain candidate preferences. To improve the project, there would need to be more variables and perhaps a longer sample. The project demonstrates how voters feel about the administration can affect which party they are going to vote for in the future. This shows the importance of public approval for a party long tern success.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

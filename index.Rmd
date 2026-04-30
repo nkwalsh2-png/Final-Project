@@ -1,7 +1,7 @@
 ---
-title: "Final Project: Approval Rates Affecting Party Switches"
+title: "Approval Rates Affecting Party Switches"
 author: "Nora Walsh"
-date: "2026-02-16"
+date: "2026-04-29"
 output:
   distill::distill_article:
     self_contained: false
@@ -15,30 +15,30 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-Did the Biden administration affect whether people voted for the same party in 2020 than they did in 2024?
+Did approval rates of the Biden administration affect whether people voted republican or democrat the next year?
 
-After the Biden administration, more people who voted with democrats voted with republicans the next year. 
+Hypothesis
+People who approved of the Biden administration voted for democrats the next year. 
 
-This is important as it can show if an administration's actions can have true affect on future elections. If a democratic party has poor execution while in office, people may switch and vote republicans. This same concept applies vice versa. Specifically looking into the Biden administration and the approval rating, can give insight into whether or not approval affects party switching. This can show people who campaign how important execution and being liked is to reelection. In the end, this could change who parties have run for them if it means they could be risking future party reelection. 
+This is important as it can show if an administration's actions can have true affect on future elections. If a democratic party has poor execution while in office, people may switch and vote republicans. This same concept applies vice versa. Specifically looking into the Biden administration and the approval rating, can give insight into whether or not approval affects party switching. This can show people who campaign how important execution and being liked is to reelection. It will also demonstrate the success of an administration and if that gets more people to stay. Furthering the point of how execution of an administration can determine if a party stays in office for longer. In the end, this could change who parties have run for them if it means they could be risking future party reelection. 
 
 
-```{r}
+```{r, echo=FALSE}
 library(tidyverse)
 data_2020 <- read_csv("~/Downloads/anes_timeseries_2020_csv_20220210/anes_timeseries_2020_csv_20220210.csv")
 data_2024 <- read_csv("~/Downloads/anes_timeseries_2024_csv_20250808/anes_timeseries_2024_csv_20250808.csv")
 ```
-## Milestone 3
+## Data Section
 
-Cleaning the data set and making graph with variables of the Biden administration and party voting consistency:
 
-```{r}
+```{r, echo=FALSE}
 # colnames(data_2020)
 # colnames(data_2024)
 ```
 
+The table shows that where democrats voted the year after the Biden administration. To break it down, 858 democrats stayed while 15 voted other and 21 voted republican meaning 21 switched. The overall party switch count is 873 stayed (FALSE) while 21 switched (TRUE). The third table shows that 13.4% switched from the disapproved. So only about 13 out of 100 people who did not approve of Biden switched. This shows little impact of poor performance but there is still an impact on switching since there was little switch. For those who approve of Biden, about 4 out of 590 switched which is a .7% showing what was predicted and that almost all who approved would stay. It is 3 tables showing similar data confirming that those who disapprove were more likely to switch. The data supports the hypothesis as the disapprovers switch at a higher rate. 
 
-
-```{r}
+```{r, include=FALSE}
 merged_data <- full_join(data_2020, data_2024, by = c("V200001" = "V200001")) |>
   distinct() |>
   filter(V202110x > 0 & V242096x > 0) |>
@@ -67,7 +67,8 @@ write.csv(dem_to_rep, "merged_cleaned_data.csv", row.names = FALSE)
 ```
 
 
-```{r}
+
+```{r, echo=FALSE}
 dem_to_rep <- dem_to_rep |>
   filter(!is.na(V241200), V241200 > 0) |>
   mutate(
@@ -92,7 +93,14 @@ table(dem_only$biden_approval, dem_only$switched)
 ```
 
 
-```{r}
+## Results Section
+
+
+The bar chart shows how many people switched based on if they approved, disapproved, or had a neutral opinion on Biden. The chart shows that those who disapproved of Biden were more likely to switch and vote republican the next election by a much higher rate than those who approved. It is much taller than both neutral and approved and nuetral and approve were almost equal showing they switched at a much lower rate. It can not claim direct causation because it is cross sectional, observational study so that means correlation rather than causation. 
+
+
+
+```{r, echo=FALSE}
 ggplot(dem_to_rep, aes(x = biden_approval, fill = switched)) +
   geom_bar(position = "dodge") +
   scale_fill_manual(values = c("TRUE" = "tomato", "FALSE" = "steelblue"),
@@ -105,11 +113,12 @@ ggplot(dem_to_rep, aes(x = biden_approval, fill = switched)) +
 ```
 
 
-This shows whether or not people who disapproved of Biden were likely to switch parties in 2024 compared to those who approved of Biden. I would expect to see a higher level of red which means switch over the disapproval but it is actually equal for approval and disapproval. The neutral party is even between stayed and switched. 
 
-Milestone 4
 
-```{r}
+
+The regression shows that democrats who disapproved of Biden were about 12.7% points more likely to switch to republican in the next election than those who approved. This percent shows statistical significance and confirms the hypothesis. The p value is 7e-15 which is very statistically significant. The R squared value is .066 which means Biden's approval explains about 6.6% of the party switching which though small, still matters and is significant. The data supports the hypothesis that the people who approve would continue to vote democrat. 
+
+```{r, echo=FALSE}
 ggplot(dem_only, aes(x = as.numeric(factor(biden_approval)), y = as.numeric(switched))) +
   geom_jitter(alpha = 0.3, height = 0.05, color = "steelblue") +
   geom_smooth(method = "lm", color = "tomato", se = TRUE) +
@@ -121,15 +130,14 @@ ggplot(dem_only, aes(x = as.numeric(factor(biden_approval)), y = as.numeric(swit
 ```
 
 
-```{r}
+```{r, echo=FALSE}
 model <- lm(switched ~ biden_approval,
              data = dem_only)
 summary(model)
 ```
-The regression line shows there is no really likelihood that whether there was approval or not on the Biden administration that there was a more likelihood to switch parties or stay. There is not statistical significance. There are likely outside factors affecting whether people switch party votes or not. 
-
-This shows the opposite of my hypothesis which is that people who approved Biden were slightly more likely to switch parties as there is a slight downward slop. Neutral still falls int he middle. Since the grey is so large there is lots of uncertainty so the trend is not statistically significant. 
 
 
+## Conclusion
 
+This project looked into whether the approval of the Biden administration had influence on Democratic voters to switch Republican in the next election. The hypothesis predicted that those who approved would continue to vote democrat while those who disapproved would switch. The data supported the hypothesis and the data suggests that approval ratings do have an effect on whether voters will party switch. There are other variables bot accounted for in the data such as economics, ideals on social issues, and certain candidate preferences. To improve the project, there would need to be more variables and perhaps a longer sample. The project demonstrates how voters feel about the administration can affect which party they are going to vote for in the future. This shows the importance of public approval for a party long tern success.  
 
